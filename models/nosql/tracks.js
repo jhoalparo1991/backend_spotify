@@ -1,4 +1,4 @@
-const { model,Schema } = require('mongoose');
+const { model,Schema,Types } = require('mongoose');
 
 
 
@@ -24,7 +24,7 @@ const trackSchema = new Schema(
             start:Number,
             end:Number
         },
-        mediaId:mongoose.Types.ObjectId
+        mediaId:Types.ObjectId
     },{
         timestamp:true,
         versionKey:false
