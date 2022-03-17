@@ -1,4 +1,5 @@
 const { storageSchema } = require('../models');
+const handle_errors = require('../utils/handleErrors');
 const PUBLIC_URL = process.env.PUBLIC_URL;
 
 
@@ -11,7 +12,7 @@ const getFiles = async (req,res)=>{
         data
     })
     } catch (error) {
-        return res.status(500).json({ ok:false,error,code:500});
+        handle_errors(res,'No se pudo procesar la peticion',400)
     }
 };
 
@@ -31,7 +32,7 @@ const uploadFile = async (req,res)=>{
         })
     } )
    }catch(err) {
-    return res.status(500).json({ ok:false,err,code:500});
+    handle_errors(res,'No se pudo procesar la peticion',400)
    }
 }
 
