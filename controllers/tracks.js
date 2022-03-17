@@ -77,12 +77,12 @@ const deleteItem = async(req, res)=>{
          req =  matchedData(req);
         const {id} = req;
 
-        const getTrack = await trackSchema.findById(id);
-        if(!getTrack){
-           return res.status(200).send({message: "No found records"});
-        }
+        // const getTrack = await trackSchema.findById({_id:id});
+        // if(!getTrack){
+        //    return res.status(200).send({message: "No found records"});
+        // }
 
-        await trackSchema.findByIdAndDelete(id);
+        await trackSchema.delete({_id:id});
         
         return res.status(200).json({
             message:"Record delete succesfully"
