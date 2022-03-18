@@ -3,7 +3,7 @@ const handle_errors = require('../utils/handleErrors');
 const { matchedData } = require('express-validator');
 const getItems =async(req,res) =>{
     try {
-        const data = await trackSchema.find({});
+        const data = await trackSchema.find();
         return res.status(200).json({
             ok:true,
             data
@@ -76,11 +76,6 @@ const deleteItem = async(req, res)=>{
     try {
          req =  matchedData(req);
         const {id} = req;
-
-        // const getTrack = await trackSchema.findById({_id:id});
-        // if(!getTrack){
-        //    return res.status(200).send({message: "No found records"});
-        // }
 
         await trackSchema.delete({_id:id});
         
