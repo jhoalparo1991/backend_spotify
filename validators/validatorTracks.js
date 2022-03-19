@@ -11,7 +11,6 @@ const validation = [
   check("duration").notEmpty().withMessage('duration is required').exists(),
   check("duration.start").notEmpty().withMessage('duration start is required').exists(),
   check("duration.end").notEmpty().withMessage('duration end is required').exists(),
-  check("mediaId").notEmpty().withMessage('the mongo id is empty').isMongoId().withMessage('the mongo id is not valid').exists().withMessage('the mongo id not exist'),
   (req, res,next) => {
     try {
       validationResult(req).throw();

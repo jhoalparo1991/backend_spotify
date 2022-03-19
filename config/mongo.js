@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const MONGO_URI = process.env.DB_MONGO_URI;
 
-const connection = ()=>{
+const dbConnectMongoDB = ()=>{
 
     mongoose.connect(MONGO_URI)
     .then(result => { console.log('******** DATABASE IS CONNECTED ********') })
@@ -11,4 +11,4 @@ const connection = ()=>{
 }
 
 
-module.exports = connection;
+module.exports = dbConnectMongoDB;

@@ -3,13 +3,17 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const path = require('path');
-const connection = require('./config/mongo');
+const dbConnectMongoDB = require('./config/mongo');
+const {dbConnectMysql} = require('./config/mysql');
+
 const morganBody = require('morgan-body');
 const loggerStream = require('./utils/handleLoggers');
 // Initialization
 const app = express();
-connection();
 
+// Engine Database
+const ENGINE_DB = process.env.ENGINE_DB; //mongodb - mysql
+(ENGINE_DB === 'mongodb') ? dbConnectMongoDB() : dbConnectMysql();
 // Settings
 const port = process.env.PORT || 3000
 

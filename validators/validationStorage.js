@@ -3,9 +3,7 @@ const { check, validationResult } = require('express-validator');
 const validationId = [
     check("id")
       .notEmpty().withMessage('Id is required')
-      .exists().withMessage('Id property not exist')
-      .isMongoId().withMessage('Id is not valid')
-      ,
+      .exists().withMessage('Id property not exist'),
     (req, res,next) => {
       try {
         validationResult(req).throw();

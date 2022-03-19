@@ -17,13 +17,13 @@ const loginController = async (req,res) =>{
 
         const user = await userSchema.findOne({email});
 
-        if(!user){return res.status(404).json({message: "email invalid"});}
+        if(!user){handle_errors(res,'Email or Password invalid',404);}
 
         const passwordHash = user.password;
         const comparePassword = await compare(password, passwordHash)
 
         if(!comparePassword){
-            return res.status(404).json({message: "password invalid"});
+            handle_errors(res,'Email or Password invalid',404);
         }
         const token = registerToken(user);
         

@@ -3,15 +3,18 @@ const { storageSchema } = require("../models");
 const handle_errors = require("../utils/handleErrors");
 const fs = require("fs");
 const path = require("path");
+const getProperty = require('../utils/handlePropertyEngine');
+
+const property = getProperty();
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 const PATH_FILE = path.join(__dirname, "../public/upload/");
 
 const getFiles = async (req, res) => {
   try {
-    const data = await storageSchema.find();
-    res.status(200).json({
-      ok: true,
+    const data = await storageSchema.findAll();
+    
+    return res.status(200).json({
       data,
     });
   } catch (error) {
@@ -24,7 +27,7 @@ const getFile = async (req, res) => {
     req = matchedData(req);
     const { id } = req;
     console.log(id);
-    const data = await storageSchema.findOne({_id:id});
+    const data = await storageSchema.findOne({[property.id]:id});
     res.status(200).json({
       ok: true,
       data,
@@ -37,27 +40,15 @@ const getFile = async (req, res) => {
 const uploadFile = async (req, res) => {
   try {
     const { filename } = req.file;
-
     const upload = new storageSchema({
       filename,
       url: `${PUBLIC_URL}${filename}`,
     });
 
-    await upload.save((err, data) => {
-      if (err)
-        return res
-          .status(403)
-          .json({
-            ok: false,
-            message: "Ocurrio un error no se pudo subir el archivo",
-            code: 403,
-          });
-      return res.json({
-        ok: true,
-        data,
-        code: 200,
-      });
-    });
+    const result = await upload.save();
+
+    return res.status(200).json({result})
+
   } catch (err) {
     handle_errors(res, "No se pudo procesar la peticion", 400);
   }
