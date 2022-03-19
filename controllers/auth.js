@@ -2,27 +2,39 @@ const { userSchema } = require('../models');
 const { matchedData } = require('express-validator');
 const { compare } = require('../utils/handlePassword');
 const handle_errors  = require('../utils/handleErrors');
+const { registerToken } = require('../middlewares/TokensMiddleware');
 
 /**
  * Login
  * @param {*} req 
  * @param {*} res 
  */
-const login = async (req,res) =>{
+const loginController = async (req,res) =>{
     try {
         
         req = matchedData(req);
-        const {email } = req;
+        const {email,password } = req;
 
-        const email_exist = await userSchema.findOne({email});
+        const user = await userSchema.findOne({email});
 
-        if(!email_exist){return res.status(404).json({message: "email or password invalid"});}
+        if(!user){return res.status(404).json({message: "email invalid"});}
 
-        res.send(email_exist)
+        const passwordHash = user.password;
+        const comparePassword = await compare(password, passwordHash)
+
+        if(!comparePassword){
+            return res.status(404).json({message: "password invalid"});
+        }
+        const token = registerToken(user);
+        
+        return res.status(200).json({
+            token,
+            user
+        });
     } catch (error) {
         handle_errors(res,error);
     }
 }
 
 
-module.exports = {login};
+module.exports = {loginController};

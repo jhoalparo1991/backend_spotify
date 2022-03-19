@@ -9,7 +9,7 @@ const encrypt = async(password)=>{
 
 
 const compare = async(password, passwordHash)=>{
-    return await bryptjs.compare(password,passwordHash);
+    return await bcryptjs.compare(password,passwordHash);
 }
 
 
